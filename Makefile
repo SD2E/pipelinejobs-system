@@ -1,6 +1,8 @@
 BUILDS = demo-jobs-reactor-app pipelines-manager jobs-manager jobs-indexer jobs-agave-proxy
 
-docs: docs-from-subs docs-sphinx
+docs: docs-sphinx
+
+docs-build: docs-from-subs docs-sphinx
 
 docs-sphinx:
 	cd docs && make html
