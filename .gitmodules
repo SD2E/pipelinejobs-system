@@ -1,15 +1,15 @@
 [submodule "jobs-agave-proxy"]
 	path = jobs-agave-proxy
-	url = git@gitlab.sd2e.org:sd2program/pipelinejobs-agave-proxy.git
+	url = https://github.com/SD2E/pipelinejobs-agave-proxy.git
 [submodule "jobs-indexer"]
 	path = jobs-indexer
-	url = git@gitlab.sd2e.org:sd2program/pipelinejobs_indexer.git
+	url = https://github.com/SD2E/pipelinejobs-indexer.git
 [submodule "jobs-manager"]
 	path = jobs-manager
-	url = git@gitlab.sd2e.org:sd2program/pipelinejobs-manager.git
+	url = https://github.com/SD2E/pipelinejobs-manager.git
 [submodule "pipelines-manager"]
 	path = pipelines-manager
-	url = git@gitlab.sd2e.org:sd2program/pipelines-manager.git
+	url = https://github.com/SD2E/pipelines-manager.git
 [submodule "demo-jobs-reactor-app"]
 	path = demo-jobs-reactor-app
-	url = git@github.com:SD2E/demo-jobs-enabled-reactor.git
+	url = https://github.com/SD2E/demo-jobs-enabled-reactor.git
