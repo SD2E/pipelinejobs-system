@@ -1,0 +1,325 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>PipelineJobs Manager &mdash; PipelineJobs System 0.2.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="PipelineJobs Indexer" href="../jobs-indexer/README.html" />
+    <link rel="prev" title="Pipelines Manager" href="../pipelines-manager/README.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> PipelineJobs System
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Components</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../pipelines-manager/README.html">Pipelines Manager</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">PipelineJobs Manager</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#updating-job-state">Updating Job State</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#json-formatted-event">JSON-formatted Event</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#url-parameters-event">URL Parameters Event</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#agave-jobs-notification">Agave Jobs Notification</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#pipelinejobs-events">PipelineJobs Events</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#authentication">Authentication</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../jobs-indexer/README.html">PipelineJobs Indexer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../jobs-agave-proxy/README.html">PipelineJobs Agave Proxy</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Authentication</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../auth/index.html">Authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../auth/oauth.html">Send a Bearer Token</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../auth/xnonce.html">Use a Nonce</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../demo-jobs-reactor-app/README.html">Reactor+App with PipelineJobs Integration</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PipelineJobs System</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>PipelineJobs Manager</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/jobs-manager/README.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="pipelinejobs-manager">
+<h1>PipelineJobs Manager<a class="headerlink" href="#pipelinejobs-manager" title="Permalink to this headline">¶</a></h1>
+<p>This Reactor manages updates to <strong>PipelineJobs</strong> once they are created by other
+processes using the <strong>ManagedPipelineJob</strong> and <strong>ReactorManagedPipelineJob</strong>
+classes.</p>
+<div class="section" id="updating-job-state">
+<h2>Updating Job State<a class="headerlink" href="#updating-job-state" title="Permalink to this headline">¶</a></h2>
+<p><strong>PipelineJobs Manager</strong> can update a job’s state via three paths:</p>
+<ol class="arabic simple">
+<li>Receipt of a JSON-formatted <strong>PipelineJob</strong> event</li>
+<li>Receipt of necessary fields to form a <strong>PipelineJob</strong> event via URL parameters</li>
+<li>Receipt of an Agave API Jobs status callback when coupled with UUID and token parameters</li>
+</ol>
+<p>The <strong>PipelineJobs Manager</strong> works synergistically with the <strong>PipelineJobs
+Indexer</strong>. When a <strong>finish</strong> event is received that results in the job
+transitioning to a <strong>FINISHED</strong> state, an <strong>index</strong> request is sent
+automatically to <strong>PipelineJobs Indexer</strong> to complete the initial stages of
+computation and metadata linkage.</p>
+<div class="section" id="json-formatted-event">
+<h3>JSON-formatted Event<a class="headerlink" href="#json-formatted-event" title="Permalink to this headline">¶</a></h3>
+<p>The default method for updating a PipelineJob’s state is to send a JSON message
+to this actor. Here is an example of a <strong>finish</strong> event to be sent to job <code class="docutils literal notranslate"><span class="pre">1073f4ff-c2b9-5190-bd9a-e6a406d9796a</span></code>, which will indicate the job has
+completed its primary computation and data archiving.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;uuid&quot;</span><span class="p">:</span> <span class="s2">&quot;1073f4ff-c2b9-5190-bd9a-e6a406d9796a&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;finish&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;token&quot;</span><span class="p">:</span> <span class="s2">&quot;0dc73dc3ff39b49a&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>This can be sent directly over HTTP like so:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">curl -XPOST -H &quot;Authorization: Bearer 969d11396c43b0b810387e4da840cb37&quot; \</span>
+<span class="go">    --data &#39;{&quot;uuid&quot;: &quot;1073f4ff-c2b9-5190-bd9a-e6a406d9796a&quot;, \</span>
+<span class="go">    &quot;token&quot;: &quot;0dc73dc3ff39b49a&quot;,\</span>
+<span class="go">    &quot;name&quot;: &quot;finish&quot;}&#39; \</span>
+<span class="go">    https://api.tacc.cloud/actors/v2/&lt;actorId&gt;/messages</span>
+</pre></div>
+</div>
+<p>It can also be sent from within a Recator like so:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rx</span> <span class="o">=</span> <span class="n">Reactor</span><span class="p">()</span>
+<span class="n">manager_id</span> <span class="o">=</span> <span class="s1">&#39;&lt;actorId&gt;&#39;</span>
+<span class="n">finish_mes</span> <span class="o">=</span> <span class="p">{</span> <span class="s1">&#39;uuid&#39;</span><span class="p">:</span> <span class="s1">&#39;1073f4ff-c2b9-5190-bd9a-e6a406d9796a&#39;</span><span class="p">,</span>
+               <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;finish&#39;</span><span class="p">,</span>
+               <span class="s1">&#39;token&#39;</span><span class="p">:</span> <span class="s1">&#39;0dc73dc3ff39b49a&#39;</span><span class="p">}</span>
+<span class="n">rx</span><span class="o">.</span><span class="n">send_message</span><span class="p">(</span><span class="n">manager_id</span><span class="p">,</span> <span class="n">finish_mes</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="url-parameters-event">
+<h3>URL Parameters Event<a class="headerlink" href="#url-parameters-event" title="Permalink to this headline">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">uuid</span></code>, and <code class="docutils literal notranslate"><span class="pre">event</span></code>, <code class="docutils literal notranslate"><span class="pre">token</span></code> fields can be sent as URL parameters in
+an HTTP POST. The contents of the POST body will be attached to the event if
+one is present. Our <strong>finish</strong> event expressed as URL parameters looks like:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>curl -XPOST --data <span class="s1">&#39;{&quot;arbitrary&quot;: &quot;key value data&quot;}&#39;</span> <span class="se">\</span>
+    https://api.tacc.cloud/actors/v2/&lt;actorId&gt;/messages?uuid<span class="o">=</span>1073f4ff-c2b9-5190-bd9a-e6a406d9796a<span class="p">&amp;</span><span class="se">\</span>
+    <span class="nv">event</span><span class="o">=</span>finish<span class="p">&amp;</span><span class="nv">token</span><span class="o">=</span>0dc73dc3ff39b49a
+</pre></div>
+</div>
+</div>
+<div class="section" id="agave-jobs-notification">
+<h3>Agave Jobs Notification<a class="headerlink" href="#agave-jobs-notification" title="Permalink to this headline">¶</a></h3>
+<p>HTTP POST body and URL parameters are combined to link the Agave
+Jobs system with <strong>PipelineJobs</strong>, which is quite handy as Agave jobs often
+are enlisted to do the computational heavy lifting in analysis workflows. This
+approach is demonstrated in the <strong>demo-jobs-reactor-app</strong> repository.</p>
+</div>
+</div>
+<div class="section" id="pipelinejobs-events">
+<h2>PipelineJobs Events<a class="headerlink" href="#pipelinejobs-events" title="Permalink to this headline">¶</a></h2>
+<p>The state of every PipelineJob proceeds through a defined lifecycle, where
+transitions occur in response to receipt of named events. This is illustrated
+in the following image:</p>
+<img alt="PipelineJob States" class="align-right" src="http://docs.catalog.sd2e.org/en/gh-pages/_images/fsm-created.png" />
+<p><strong>PipelineJobs Manager</strong> accepts any of the events (lower case words attached
+to the graph edges) save for <strong>create</strong>, which is reserved for other agents.</p>
+</div>
+<div class="section" id="authentication">
+<h2>Authentication<a class="headerlink" href="#authentication" title="Permalink to this headline">¶</a></h2>
+<p>POSTs to a <strong>PipelineJobs Manager</strong> must be authenticated by one of two means:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>Send a valid TACC.cloud Oauth2 Bearer token with the request</li>
+<li>Include a special URL parameter called a <strong>nonce</strong> with the HTTP request</li>
+</ol>
+</div></blockquote>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../jobs-indexer/README.html" class="btn btn-neutral float-right" title="PipelineJobs Indexer" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../pipelines-manager/README.html" class="btn btn-neutral" title="Pipelines Manager" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, TACC Open Source.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.2.0',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

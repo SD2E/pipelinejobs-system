@@ -1,0 +1,550 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>PipelineJobs Agave Proxy &mdash; PipelineJobs System 0.2.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Authentication" href="../auth/index.html" />
+    <link rel="prev" title="PipelineJobs Indexer" href="../jobs-indexer/README.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> PipelineJobs System
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Components</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../pipelines-manager/README.html">Pipelines Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../jobs-manager/README.html">PipelineJobs Manager</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../jobs-indexer/README.html">PipelineJobs Indexer</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">PipelineJobs Agave Proxy</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#register-agave-app-as-a-pipeline">Register Agave App as a Pipeline</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#app-architecture">App Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#share-or-publish-the-app">Share or Publish the App</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#registering-a-pipeline">Registering a Pipeline</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#launching-a-managed-agave-job">Launching a Managed Agave Job</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#agave-job-definition">Agave Job Definition</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#metadata-linkage-parameter">Metadata Linkage Parameter</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#which-parameter-to-pass">Which Parameter to Pass</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#additional-control-parameters">Additional Control Parameters</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#instanced">instanced</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#index-patterns">index_patterns</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#processing-level">processing_level</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#job-life-cycle">Job Life Cycle</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">Authentication</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../auth/index.html">Authentication</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../auth/oauth.html">Send a Bearer Token</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../auth/xnonce.html">Use a Nonce</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Examples</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../demo-jobs-reactor-app/README.html">Reactor+App with PipelineJobs Integration</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">PipelineJobs System</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>PipelineJobs Agave Proxy</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/jobs-agave-proxy/README.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="pipelinejobs-agave-proxy">
+<h1>PipelineJobs Agave Proxy<a class="headerlink" href="#pipelinejobs-agave-proxy" title="Permalink to this headline">¶</a></h1>
+<p>This Reactor provides a generalized proxy for running Agave API jobs such that
+their inputs, parameterization, and outputs are connected to (and thus
+discoverable from within) the Data Catalog.</p>
+<div class="section" id="register-agave-app-as-a-pipeline">
+<h2>Register Agave App as a Pipeline<a class="headerlink" href="#register-agave-app-as-a-pipeline" title="Permalink to this headline">¶</a></h2>
+<p>Before an Agave App can be run by this proxy, three things must happen:</p>
+<ol class="arabic simple">
+<li>It must be architected to fit the PipelineJobs workflow</li>
+<li>It must be public or shared with user <strong>sd2eadm</strong></li>
+<li>It must be registered as a Data Catalog <code class="docutils literal notranslate"><span class="pre">Pipeline</span></code></li>
+</ol>
+<div class="section" id="app-architecture">
+<h3>App Architecture<a class="headerlink" href="#app-architecture" title="Permalink to this headline">¶</a></h3>
+<p>The app must generate filenames that are distinguishable between runs. This is
+enforced to prevent accidentallly over-writing of files when multiple jobs
+share an archiving destination. Furthermore, the app definition and any
+interior runtime logic must use fully-qualified Agave files URLs to
+define inputs. Finally, the app’s <code class="docutils literal notranslate"><span class="pre">id</span></code> must be unique not only in the
+<strong>Agave Apps Catalog</strong> (this is automatically enforced) but also in the
+<strong>Data Catalog Pipelines</strong> collection.</p>
+</div>
+<div class="section" id="share-or-publish-the-app">
+<h3>Share or Publish the App<a class="headerlink" href="#share-or-publish-the-app" title="Permalink to this headline">¶</a></h3>
+<p><em>Coming soon…</em></p>
+</div>
+<div class="section" id="registering-a-pipeline">
+<h3>Registering a Pipeline<a class="headerlink" href="#registering-a-pipeline" title="Permalink to this headline">¶</a></h3>
+<p><em>Coming soon…</em></p>
+</div>
+</div>
+<div class="section" id="launching-a-managed-agave-job">
+<h2>Launching a Managed Agave Job<a class="headerlink" href="#launching-a-managed-agave-job" title="Permalink to this headline">¶</a></h2>
+<p>Construct and send a message including the following to <strong>PipelineJobs Agave Proxy</strong></p>
+<ol class="arabic simple">
+<li>An Agave job definition</li>
+<li>A metdata linkage parameter</li>
+<li>Optional control parameters</li>
+</ol>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">The JSONschema for a <strong>PipelineJobs Agave Proxy</strong> request is in <a class="reference external" href="/message.jsonschema">message.jsonschema</a>.</p>
+</div>
+<div class="section" id="agave-job-definition">
+<h3>Agave Job Definition<a class="headerlink" href="#agave-job-definition" title="Permalink to this headline">¶</a></h3>
+<p>The Agave job definition must be included as as subdocument in the message. To
+illustrate this, let us start with a basic Agave job definition. Here is an
+example for app <code class="docutils literal notranslate"><span class="pre">tacobot9000-0.1.0u1</span></code>.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+  <span class="nt">&quot;appId&quot;</span><span class="p">:</span> <span class="s2">&quot;tacobot9000-0.1.0u1&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;TACObot job&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;inputs&quot;</span><span class="p">:</span> <span class="p">{</span><span class="nt">&quot;file1&quot;</span><span class="p">:</span> <span class="s2">&quot;agave://data.tacc.cloud/examples/tacobot/test1.txt&quot;</span><span class="p">},</span>
+  <span class="nt">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">{</span><span class="nt">&quot;salsa&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span> <span class="nt">&quot;avocado&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span> <span class="nt">&quot;cheese&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">},</span>
+  <span class="nt">&quot;maxRunTime&quot;</span><span class="p">:</span> <span class="s2">&quot;01:00:00&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>To launch this via the Agave, this document would be sent directly to the
+<code class="docutils literal notranslate"><span class="pre">/apps</span></code> endpoint. To send it instead to the proxy, move it to key
+<code class="docutils literal notranslate"><span class="pre">job_definition</span></code> in a JSON document.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;job_definition&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;appId&quot;</span><span class="p">:</span> <span class="s2">&quot;tacobot9000-0.1.0u1&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;TACObot job&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;inputs&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="nt">&quot;file1&quot;</span><span class="p">:</span> <span class="s2">&quot;agave://data.tacc.cloud/examples/tacobot/test1.txt&quot;</span>
+            <span class="p">},</span>
+            <span class="nt">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="nt">&quot;salsa&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+                    <span class="nt">&quot;avocado&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+                    <span class="nt">&quot;cheese&quot;</span><span class="p">:</span> <span class="kc">true</span>
+            <span class="p">},</span>
+            <span class="nt">&quot;maxRunTime&quot;</span><span class="p">:</span> <span class="s2">&quot;01:00:00&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="metadata-linkage-parameter">
+<h3>Metadata Linkage Parameter<a class="headerlink" href="#metadata-linkage-parameter" title="Permalink to this headline">¶</a></h3>
+<p>An explicit linkage to objects in the Data Catalog must be established. This is
+done via the <code class="docutils literal notranslate"><span class="pre">parameters</span></code> key, which must contain a valid value for one of
+the following:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">experiment_id</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">sample_id</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">measurement_id</span></code></li>
+</ul>
+<p>Either single values or an array of values may be passed, and either the
+readable text value may be provided or the corresponding UUID.</p>
+<div class="section" id="which-parameter-to-pass">
+<h4>Which Parameter to Pass<a class="headerlink" href="#which-parameter-to-pass" title="Permalink to this headline">¶</a></h4>
+<p>A PipelineJob is always linked to a set of measurements by way of the
+linkage parameter. The job’s archive path is also determined by the linkage
+parameter. This is best illustrated rather than explained.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">measurement_id=['measurement.tacc.1234',</span>
+<span class="pre">'measurement.tacc.2345']</span></code>, then the job will linked to these two measurements
+and the archive path will end with a hash of the two <code class="docutils literal notranslate"><span class="pre">measurement_id</span></code> values.</p>
+<p>Assuming those measurements are children of <code class="docutils literal notranslate"><span class="pre">sample.tacc.abcde</span></code> and the
+linkage parameter was sent as <code class="docutils literal notranslate"><span class="pre">sample_id='sample.tacc.abcdef'</span></code>, the job will
+still be linked to the same measurements, but the archive path will end with
+a hash of <code class="docutils literal notranslate"><span class="pre">sample.tacc.abcde</span></code>.  The same applies for <code class="docutils literal notranslate"><span class="pre">experiment_id</span></code>.</p>
+<p>This design allows files generated by the job to be linked to only one level
+of the metadata hiearchy, while allowing collection of outputs at higher
+levels of organization in the file system.</p>
+<p>Here is a worked example of our job request as it stands:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;sample_id&quot;</span><span class="p">:</span> <span class="s2">&quot;sample.tacc.abcde&quot;</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;job_definition&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;appId&quot;</span><span class="p">:</span> <span class="s2">&quot;tacobot9000-0.1.0u1&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;TACObot job&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;inputs&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="nt">&quot;file1&quot;</span><span class="p">:</span> <span class="s2">&quot;agave://data.tacc.cloud/examples/tacobot/test1.txt&quot;</span>
+            <span class="p">},</span>
+            <span class="nt">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="nt">&quot;salsa&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+                    <span class="nt">&quot;avocado&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+                    <span class="nt">&quot;cheese&quot;</span><span class="p">:</span> <span class="kc">true</span>
+            <span class="p">},</span>
+            <span class="nt">&quot;maxRunTime&quot;</span><span class="p">:</span> <span class="s2">&quot;01:00:00&quot;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="additional-control-parameters">
+<h3>Additional Control Parameters<a class="headerlink" href="#additional-control-parameters" title="Permalink to this headline">¶</a></h3>
+<p>The behavior of the job can be refined with additional control parameters.</p>
+<div class="section" id="instanced">
+<h4>instanced<a class="headerlink" href="#instanced" title="Permalink to this headline">¶</a></h4>
+<p>Each PipelineJob has a distinct archive path derived from its Pipeline UUID,
+the <code class="docutils literal notranslate"><span class="pre">data</span></code> dictionary passed at job <code class="docutils literal notranslate"><span class="pre">init()</span></code> and/or <code class="docutils literal notranslate"><span class="pre">setup()</span></code>, and a
+function of its linkage parameters to experiments, samples, or measurements.
+To avoid inadvertent over-writes, the archive path is extended with an
+<em>instancing directory</em> named in the form <code class="docutils literal notranslate"><span class="pre">adjective-animal-YYYYMMDDTHHmmssZ</span></code>.
+To avoid use of the instancing directory, include <code class="docutils literal notranslate"><span class="pre">instanced:</span> <span class="pre">false</span></code> in the
+job request message.</p>
+<p>Example: <code class="docutils literal notranslate"><span class="pre">&quot;instanced&quot;:</span> <span class="pre">false</span></code></p>
+</div>
+<div class="section" id="index-patterns">
+<h4>index_patterns<a class="headerlink" href="#index-patterns" title="Permalink to this headline">¶</a></h4>
+<p>The default behavior of the PipelineJobs System is to index every file found
+under a job’s archive path to be linked to that specific job. To subselect only
+specific files, it is possible to include one or more Python regular
+expressions in <code class="docutils literal notranslate"><span class="pre">index_patterns</span></code>. Only files matching these patterns will be
+linked to the job.</p>
+<p>Example: <code class="docutils literal notranslate"><span class="pre">&quot;index_patterns&quot;:</span> <span class="pre">[]</span></code></p>
+</div>
+<div class="section" id="processing-level">
+<h4>processing_level<a class="headerlink" href="#processing-level" title="Permalink to this headline">¶</a></h4>
+<p>The default behavior of the PipelineJobs System is to index files under a job’s
+archive path as processing level “1”. To change this, an alternative
+<code class="docutils literal notranslate"><span class="pre">processing_level</span></code> may be passed in the job request message.</p>
+<p>Example: <code class="docutils literal notranslate"><span class="pre">&quot;processing_level&quot;:</span> <span class="pre">&quot;2&quot;</span></code></p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Only one automatic indexing configuration can be active for a given
+job. Additional indexing actions with other configurations may be
+initiated by sending a message directly to <strong>PipelineJobs Indexer</strong></p>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="job-life-cycle">
+<h2>Job Life Cycle<a class="headerlink" href="#job-life-cycle" title="Permalink to this headline">¶</a></h2>
+<p>Here is complete record from the Pipelines system showing how the information
+from job creation and subsequent events is stored and discoverable. A few key
+highlights:</p>
+<ul class="simple">
+<li>The top-level <code class="docutils literal notranslate"><span class="pre">data</span></code> field holds the original parameterization of the job</li>
+<li>Three events are noted in the <code class="docutils literal notranslate"><span class="pre">history</span></code>: create, run, finish</li>
+<li>The actor and execution for the managing instance of <strong>PipelineJobs Agave Proxy</strong> are available under <code class="docutils literal notranslate"><span class="pre">agent</span></code> and <code class="docutils literal notranslate"><span class="pre">task</span></code>, respectively</li>
+</ul>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="nt">&quot;agent&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.tacc.cloud/actors/v2/G46vjoAVzGkkz&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;archive_path&quot;</span><span class="p">:</span> <span class="s2">&quot;/products/v2/103f877a7ab857d182807b75af4eab6e/106bd127e2d257acb9be11ed06042e68/eligible-awk-20181127T173243Z&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;archive_system&quot;</span><span class="p">:</span> <span class="s2">&quot;data-sd2e-community&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="nt">&quot;appId&quot;</span><span class="p">:</span> <span class="s2">&quot;urrutia-novel_chassis_app-0.1.0&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;archivePath&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;inputs&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="nt">&quot;file1&quot;</span><span class="p">:</span> <span class="s2">&quot;agave://data.tacc.cloud/examples/tacobot/test1.txt&quot;</span>
+            <span class="p">},</span>
+            <span class="nt">&quot;maxRunTime&quot;</span><span class="p">:</span> <span class="s2">&quot;01:00:00&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;TACObot job&quot;</span><span class="p">,</span>
+            <span class="nt">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="nt">&quot;avocado&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+                    <span class="nt">&quot;cheese&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+                    <span class="nt">&quot;salsa&quot;</span><span class="p">:</span> <span class="kc">true</span>
+            <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="nt">&quot;derived_from&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s2">&quot;1022efa3-4480-538f-a581-f1810fb4e0c3&quot;</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;generated_by&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s2">&quot;106bd127-e2d2-57ac-b9be-11ed06042e68&quot;</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;history&quot;</span><span class="p">:</span> <span class="p">[{</span>
+                    <span class="nt">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
+                            <span class="nt">&quot;appId&quot;</span><span class="p">:</span> <span class="s2">&quot;tacobot9000-0.1.0u1&quot;</span><span class="p">,</span>
+                            <span class="nt">&quot;inputs&quot;</span><span class="p">:</span> <span class="p">{</span>
+                                    <span class="nt">&quot;file1&quot;</span><span class="p">:</span> <span class="s2">&quot;agave://data.tacc.cloud/examples/tacobot/test1.txt&quot;</span>
+                            <span class="p">},</span>
+                            <span class="nt">&quot;maxRunTime&quot;</span><span class="p">:</span> <span class="s2">&quot;01:00:00&quot;</span><span class="p">,</span>
+                            <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;TACObot job&quot;</span><span class="p">,</span>
+                            <span class="nt">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">{</span>
+                                    <span class="nt">&quot;avocado&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+                                    <span class="nt">&quot;cheese&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+                                    <span class="nt">&quot;salsa&quot;</span><span class="p">:</span> <span class="kc">true</span>
+                            <span class="p">}</span>
+                    <span class="p">},</span>
+                    <span class="nt">&quot;date&quot;</span><span class="p">:</span> <span class="s2">&quot;2018-12-08T00:08:32.000+0000&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;create&quot;</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+                    <span class="nt">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
+                            <span class="nt">&quot;appId&quot;</span><span class="p">:</span> <span class="s2">&quot;tacobot9000-0.1.0u1&quot;</span><span class="p">,</span>
+                            <span class="nt">&quot;archive&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+                            <span class="nt">&quot;archivePath&quot;</span><span class="p">:</span> <span class="s2">&quot;/products/v2/103f877a7ab857d182807b75af4eab6e/106bd127e2d257acb9be11ed06042e68/eligible-awk-20181127T173243Z&quot;</span><span class="p">,</span>
+                            <span class="nt">&quot;archiveSystem&quot;</span><span class="p">:</span> <span class="s2">&quot;data-tacc-cloud&quot;</span><span class="p">,</span>
+                            <span class="nt">&quot;batchQueue&quot;</span><span class="p">:</span> <span class="s2">&quot;normal&quot;</span><span class="p">,</span>
+                            <span class="nt">&quot;created&quot;</span><span class="p">:</span> <span class="s2">&quot;2018-12-07T18:08:37.000-06:00&quot;</span><span class="p">,</span>
+                            <span class="nt">&quot;endTime&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+                            <span class="nt">&quot;executionSystem&quot;</span><span class="p">:</span> <span class="s2">&quot;hpc-tacc-stampede2&quot;</span><span class="p">,</span>
+                            <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;7381691026605150696-242ac11b-0001-007&quot;</span><span class="p">,</span>
+                            <span class="nt">&quot;inputs&quot;</span><span class="p">:</span> <span class="p">{</span>
+                                    <span class="nt">&quot;file1&quot;</span><span class="p">:</span> <span class="s2">&quot;agave://data.tacc.cloud/examples/tacobot/test1.txt&quot;</span>
+                            <span class="p">},</span>
+                            <span class="nt">&quot;lastUpdated&quot;</span><span class="p">:</span> <span class="s2">&quot;2018-12-07T18:09:40.000-06:00&quot;</span><span class="p">,</span>
+                            <span class="nt">&quot;maxRunTime&quot;</span><span class="p">:</span> <span class="s2">&quot;01:00:00&quot;</span><span class="p">,</span>
+                            <span class="nt">&quot;memoryPerNode&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+                            <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;TACObot job&quot;</span><span class="p">,</span>
+                            <span class="nt">&quot;nodeCount&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+                            <span class="nt">&quot;outputPath&quot;</span><span class="p">:</span> <span class="s2">&quot;tacobot/job-7381691026605150696-242ac11b-0001-007-TACObot-job&quot;</span><span class="p">,</span>
+                            <span class="nt">&quot;owner&quot;</span><span class="p">:</span> <span class="s2">&quot;tacobot&quot;</span><span class="p">,</span>
+                            <span class="nt">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">{</span>
+                                    <span class="nt">&quot;avocado&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+                                    <span class="nt">&quot;cheese&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+                                    <span class="nt">&quot;salsa&quot;</span><span class="p">:</span> <span class="kc">true</span>
+                            <span class="p">},</span>
+                            <span class="nt">&quot;processorsPerNode&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+                            <span class="nt">&quot;startTime&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+                            <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;RUNNING&quot;</span><span class="p">,</span>
+                            <span class="nt">&quot;submitTime&quot;</span><span class="p">:</span> <span class="s2">&quot;2018-12-07T18:09:40.000-06:00&quot;</span>
+                    <span class="p">},</span>
+                    <span class="nt">&quot;date&quot;</span><span class="p">:</span> <span class="s2">&quot;2018-12-08T00:10:12.000+0000&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;run&quot;</span>
+            <span class="p">},</span>
+            <span class="p">{</span>
+                    <span class="nt">&quot;data&quot;</span><span class="p">:</span> <span class="p">{</span>
+                            <span class="nt">&quot;appId&quot;</span><span class="p">:</span> <span class="s2">&quot;tacobot9000-0.1.0u1&quot;</span><span class="p">,</span>
+                            <span class="nt">&quot;archive&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+                            <span class="nt">&quot;archivePath&quot;</span><span class="p">:</span> <span class="s2">&quot;/products/v2/103f877a7ab857d182807b75af4eab6e/106bd127e2d257acb9be11ed06042e68/eligible-awk-20181127T173243Z&quot;</span><span class="p">,</span>
+                            <span class="nt">&quot;archiveSystem&quot;</span><span class="p">:</span> <span class="s2">&quot;data-tacc-cloud&quot;</span><span class="p">,</span>
+                            <span class="nt">&quot;batchQueue&quot;</span><span class="p">:</span> <span class="s2">&quot;normal&quot;</span><span class="p">,</span>
+                            <span class="nt">&quot;created&quot;</span><span class="p">:</span> <span class="s2">&quot;2018-12-07T18:08:37.000-06:00&quot;</span><span class="p">,</span>
+                            <span class="nt">&quot;endTime&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
+                            <span class="nt">&quot;executionSystem&quot;</span><span class="p">:</span> <span class="s2">&quot;hpc-tacc-stampede2&quot;</span><span class="p">,</span>
+                            <span class="nt">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;7381691026605150696-242ac11b-0001-007&quot;</span><span class="p">,</span>
+                            <span class="nt">&quot;inputs&quot;</span><span class="p">:</span> <span class="p">{</span>
+                                    <span class="nt">&quot;file1&quot;</span><span class="p">:</span> <span class="s2">&quot;agave://data.tacc.cloud/examples/tacobot/test1.txt&quot;</span>
+                            <span class="p">},</span>
+                            <span class="nt">&quot;lastUpdated&quot;</span><span class="p">:</span> <span class="s2">&quot;2018-12-07T18:53:20.000-06:00&quot;</span><span class="p">,</span>
+                            <span class="nt">&quot;maxRunTime&quot;</span><span class="p">:</span> <span class="s2">&quot;01:00:00&quot;</span><span class="p">,</span>
+                            <span class="nt">&quot;memoryPerNode&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+                            <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;TACObot job&quot;</span><span class="p">,</span>
+                            <span class="nt">&quot;nodeCount&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+                            <span class="nt">&quot;outputPath&quot;</span><span class="p">:</span> <span class="s2">&quot;tacobot/job-7381691026605150696-242ac11b-0001-007-TACObot-job&quot;</span><span class="p">,</span>
+                            <span class="nt">&quot;owner&quot;</span><span class="p">:</span> <span class="s2">&quot;tacobot&quot;</span><span class="p">,</span>
+                            <span class="nt">&quot;parameters&quot;</span><span class="p">:</span> <span class="p">{</span>
+                                    <span class="nt">&quot;avocado&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+                                    <span class="nt">&quot;cheese&quot;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+                                    <span class="nt">&quot;salsa&quot;</span><span class="p">:</span> <span class="kc">true</span>
+                            <span class="p">},</span>
+                            <span class="nt">&quot;processorsPerNode&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+                            <span class="nt">&quot;startTime&quot;</span><span class="p">:</span> <span class="s2">&quot;2018-12-07T18:09:49.000-06:00&quot;</span><span class="p">,</span>
+                            <span class="nt">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;FINISHED&quot;</span><span class="p">,</span>
+                            <span class="nt">&quot;submitTime&quot;</span><span class="p">:</span> <span class="s2">&quot;2018-12-07T18:09:40.000-06:00&quot;</span>
+                    <span class="p">},</span>
+                    <span class="nt">&quot;date&quot;</span><span class="p">:</span> <span class="s2">&quot;2018-12-08T00:53:45.000+0000&quot;</span><span class="p">,</span>
+                    <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;finish&quot;</span>
+            <span class="p">}</span>
+    <span class="p">],</span>
+    <span class="nt">&quot;last_event&quot;</span><span class="p">:</span> <span class="s2">&quot;finish&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;pipeline_uuid&quot;</span><span class="p">:</span> <span class="s2">&quot;106bd127-e2d2-57ac-b9be-11ed06042e68&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;session&quot;</span><span class="p">:</span> <span class="s2">&quot;casual-bass&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;state&quot;</span><span class="p">:</span> <span class="s2">&quot;FINISHED&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;task&quot;</span><span class="p">:</span> <span class="s2">&quot;https://api.tacc.cloud/actors/v2/G46vjoAVzGkkz/executions/Myp6wvklV0zgQ&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;updated&quot;</span><span class="p">:</span> <span class="s2">&quot;2018-12-08T00:53:45.000+0000&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;uuid&quot;</span><span class="p">:</span> <span class="s2">&quot;10743f9e-f5ae-5b4c-859e-6774ef4ab08b&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../auth/index.html" class="btn btn-neutral float-right" title="Authentication" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../jobs-indexer/README.html" class="btn btn-neutral" title="PipelineJobs Indexer" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, TACC Open Source.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.2.0',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
