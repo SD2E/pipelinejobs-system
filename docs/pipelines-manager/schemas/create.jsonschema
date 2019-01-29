@@ -1,0 +1,181 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#",
+	"title": "PipelinesDefinition",
+	"description": "A Pipeline record. POST to PipelinesManager to create.",
+	"definitions": {
+		"container_repo": {
+			"type": "string",
+			"description": "a Linux container image repository and tag"
+		},
+		"agave_app": {
+			"description": "Agave application",
+			"type": "object",
+			"properties": {
+				"id": {
+					"type": "string",
+					"description": "the distinct 'app.id' for the Agave app"
+				},
+				"inputs": {
+					"type": "object",
+					"description": "predefined inputs for jobs spawned by the app"
+				},
+				"parameters": {
+					"type": "object",
+					"description": "predefined parameters for the jobs spawned by the app",
+					"properties": {
+						"CONTAINER_IMAGE": {
+							"$ref": "#/definitions/container_repo",
+							"description": "Linux container image repository and tag for the deployed app"
+						}
+					}
+				}
+			},
+			"required": ["id", "inputs", "parameters"]
+		},
+		"container": {
+			"description": "Deployed Linux container",
+			"type": "object",
+			"properties": {
+				"repo": {
+					"$ref": "#/definitions/container_repo",
+					"description": "Linux container image repository and tag for the service"
+				},
+				"hash": {
+					"type": "string",
+					"description": "Linux container image hash"
+				},
+				"options": {
+					"type": "object",
+					"description": "Deployment options"
+				}
+			},
+			"required": ["repo"]
+		},
+		"service": {
+			"description": "External networked resource",
+			"type": "object",
+			"properties": {
+				"identifier": {
+					"type": "string",
+					"description": "An identifier for a specific instance of a service"
+				},
+				"uri": {
+					"type": "string",
+					"description": "Canonical URI for the resource",
+					"format": "uri"
+				},
+				"options": {
+					"type": "object",
+					"description": "Additional descriptive attributes"
+				}
+			},
+			"required": ["uri"]
+		},
+		"abaco_actor": {
+			"description": "Abaco Reactor",
+			"type": "object",
+			"properties": {
+				"id": {
+					"type": "string",
+					"description": "Distinct 'actor.id' for the Reactor"
+				},
+				"repo": {
+					"$ref": "#/definitions/container_repo",
+					"description": "Linux container image repository and tag for the deployed actor"
+				},
+				"options": {
+					"type": "object",
+					"description": "Predefined runtime options for the Reactor"
+				}
+			},
+			"required": ["id", "repo"]
+		},
+		"pipeline_type": {
+			"description": "the general class of action done by the pipeline",
+			"type": "string",
+			"enum": ["generic-process", "data-transfer", "metadata-management", "primary-etl", "secondary-etl"],
+			"default": "primary-etl"
+		},
+		"processing_level": {
+			"description": "a data processing level",
+			"type": "string",
+			"enum": ["0", "1", "2", "3"]
+		},
+		"collections_level": {
+			"description": "a data processing level",
+			"type": "string",
+			"enum": ["reference", "user_file", "challenge_problem", "experiment", "sample", "measurement", "file", "pipeline", "job", "product"]
+		}
+	},
+	"type": "object",
+	"properties": {
+		"name": {
+			"type": "string"
+		},
+		"description": {
+			"type": "string"
+		},
+		"components": {
+			"description": "an unordered array of apps and actors in the pipeline (required)",
+			"type": "array",
+			"items": {
+				"anyOf": [{
+						"$ref": "#/definitions/agave_app"
+					},
+					{
+						"$ref": "#/definitions/abaco_actor"
+					},
+					{
+						"$ref": "#/definitions/service"
+					},
+					{
+						"$ref": "#/definitions/container"
+					}
+				]
+			}
+		},
+		"collections_levels": {
+			"type": "array",
+			"items": {
+				"$ref": "#/definitions/collections_level"
+			},
+			"description": "level(s) of data input that the pipeline acts upon",
+			"default": []
+		},
+		"processing_levels": {
+			"type": "array",
+			"description": "level(s) of data product produced by the pipeline",
+			"items": {
+				"$ref": "#/definitions/processing_level"
+			},
+			"default": []
+		},
+		"pipeline_type": {
+			"items": {
+				"$ref": "#/definitions/pipeline_type"
+			}
+		},
+		"accepts": {
+			"type": "array",
+			"description": "file types accepted by the pipeline",
+			"items": {
+				"type": "string"
+			},
+			"default": ["*"]
+		},
+		"produces": {
+			"type": "array",
+			"description": "file types produced by the pipeline",
+			"items": {
+				"type": "string"
+			},
+			"default": ["*"]
+		},
+		"__options": {
+			"description": "private object for passing runtime options to a pipeline (optional)",
+			"type": "object"
+		}
+	},
+	"required": ["name", "components"],
+	"additionalProperties": false
+}
