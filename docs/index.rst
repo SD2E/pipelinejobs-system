@@ -22,6 +22,7 @@ PipelineJobs System Documentation
     auth/index.rst
     auth/oauth.rst
     auth/xnonce.rst
+    auth/token.rst
 
 .. toctree::
     :maxdepth: 1

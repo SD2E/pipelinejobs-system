@@ -1,5 +1,5 @@
-Authentication
-^^^^^^^^^^^^^^
+HTTP Authentication
+===================
 
 All POSTs to PipelineJobs components must be authenticated. There are two
 mechanisms by which this can be accomomplished.
